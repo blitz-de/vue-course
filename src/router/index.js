@@ -1,6 +1,6 @@
 import {
   createRouter,
-  createWebHashHistory,
+  createWebHistory,
 } from 'vue-router';
 import HomePage from '../home/HomePage.vue';
 import RobotBuilder from '../build/RobotBuilder.vue';
@@ -14,7 +14,8 @@ import SidebarStandard from '../sidebars/SidebarStandard.vue';
 import SideBarBuild from '../sidebars/SidebarBuild.vue';
 
 export default createRouter({
-  history: createWebHashHistory(), // hashtag routing
+  // history: createWebHashHistory(), // hashtag routing
+  history: createWebHistory(),
   routes: [{
     path: '/',
     name: 'Home',
@@ -60,5 +61,9 @@ export default createRouter({
     name: 'Parts',
     component: PartInfo,
     props: true,
+    beforeEnter(to, from, next) {
+      const isValidId = Number.isInteger(Number(to.params.id));
+      next(isValidId);
+    },
   }],
 });
