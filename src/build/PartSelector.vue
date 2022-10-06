@@ -1,10 +1,24 @@
 <template>
     <div class="part" :class="position">
-      <img :src="selectedPart.src" title="arm"/>
+        <div>User: {{user.userName}}</div>
+      <img :src="selectedPart.src" @click="showPartInfo = !showPartInfo"
+        title="arm"/>
       <button @click="selectPreviousPart()" class="prev-selector"></button>
       <button @click="selectNextPart()" class="next-selector"></button>
       <span class="sale" v-show="selectedPart.onSale">Sale!</span>
+      <teleport to="#partInfo" v-if="showPartInfo">
+        <div>
+            <div>
+                {{selectedPart.cost}} {{selectedPart.title}} {{selectedPart.type}}
+            </div>
+            <div>
+                {{selectedPart.description}}
+                <hr />
+            </div>
+        </div>
+    </teleport>
     </div>
+
   </template>
 
 <script>
@@ -23,6 +37,7 @@ function getNextValidIndex(index, length) {
 }
 
 export default {
+  inject: ['user'],
   props: {
     parts: { type: Array, required: true },
     position: {
@@ -36,7 +51,7 @@ export default {
   },
 
   data() {
-    return { selectedPartIndex: 0 };
+    return { selectedPartIndex: 0, showPartInfo: false };
   },
   computed: {
     selectedPart() {
